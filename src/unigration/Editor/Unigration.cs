@@ -19,6 +19,10 @@ public class Unigration : AssetPostprocessor
 
     static Unigration()
     {
+        if (Application.isPlaying ||
+            EditorApplication.isPlayingOrWillChangePlaymode)
+            return;
+
         if (File.Exists(DataPath))
         {
             if (data == null)
