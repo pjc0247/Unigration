@@ -31,18 +31,28 @@ public class Unigration : AssetPostprocessor
                     Debug.Log(node.name + " / " + node.version); 
                 }
             }
-
-            return;
+        }
+        else
+        {
+            data = new UnigrationData();
         }
          
-        /*
         var unis = Directory.GetFiles("Assets/", "*.unigration", SearchOption.AllDirectories);
 
         foreach (var path in unis)
         {
+            if (path == DataPath)
+                continue;
+
             var node = LoadNode(path);
+
+            if (data.nodes.Any(m => m.name == node.name))
+                continue;
+
+            data.nodes.Add(node);
         }
-        */
+
+        SaveData(DataPath);
     }
 
     public static UnigrationNode GetPackage(string name)
@@ -151,4 +161,9 @@ public class UnigrationNode
 public class UnigrationData
 {
     public List<UnigrationNode> nodes { get; set; }
+
+    public UnigrationData()
+    {
+        nodes = new List<UnigrationNode>();
+    }
 }
