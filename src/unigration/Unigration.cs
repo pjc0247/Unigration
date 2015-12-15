@@ -101,7 +101,7 @@ public class Unigration : AssetPostprocessor
 
         Debug.Log("Migrate " + old.version + " -> " + to.version);
 
-        foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+        foreach (var type in Assembly.GetExecutingAssembly().GetExportedTypes())
         {
             if (type.Namespace != old.container)
                 continue;
@@ -117,12 +117,12 @@ public class Unigration : AssetPostprocessor
             var up = type.GetMethod("Up");
             var since = type.GetMethod("Since");
 
-            if (to.IsGreaterThan(version))
+            if (to.IsGEThan(version))
             {
                 if (since != null)
                     since.Invoke(null, new object[] { old.version });
             }
-            if(old.IsGreaterThan(version))
+            if(to.version == version)
             {
                 if (up != null)
                     up.Invoke(null, new object[] { old.version });
@@ -160,6 +160,14 @@ public class UnigrationNode
     public bool IsGreaterThan(string v)
     {
         return new Version(version) > new Version(v);
+    }
+    public bool IsGEThan(UnigrationNode o)
+    {
+        return new Version(version) >= new Version(o.version);
+    }
+    public bool IsGEThan(string v)
+    {
+        return new Version(version) >= new Version(v);
     }
 }
 public class UnigrationData
