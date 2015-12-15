@@ -1,8 +1,7 @@
 <sup>class</sup> __Unigration__
 ====
 
-Static Methods
-----
+###### Static Methods
 
 __GetPackage(string name)__<br>
 지정된 이름의 패키지를 가져옵니다.
