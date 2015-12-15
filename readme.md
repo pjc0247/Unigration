@@ -59,4 +59,4 @@ __Since__ 는 해당 버전부터 마이그레이션이 실행될 때 마다 계속 호출됩니다.<br>
 
 Download
 ----
-* [Unigration.unitypackage](Unigration.unitypackage)
+* [Unigration.unitypackage](https://github.com/pjc0247/Unigration/raw/master/Unigration.unitypackage)
