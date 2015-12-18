@@ -45,7 +45,7 @@ public class Unigration : AssetPostprocessor
 
         foreach (var path in unis)
         {
-            if (path == DataPath)
+            if (path.Replace('\\', '/') == DataPath)
                 continue;
 
             var node = LoadNode(path);
@@ -56,7 +56,8 @@ public class Unigration : AssetPostprocessor
             data.nodes.Add(node);
         }
 
-        SaveData(DataPath);
+        if (unis.Length > 0)
+            SaveData(DataPath);
     }
 
     public static UnigrationNode GetPackage(string name)
@@ -74,7 +75,7 @@ public class Unigration : AssetPostprocessor
         {
             if (path == DataPath)
                 continue;
-
+            
             if (path.EndsWith(".unigration"))
             {
                 Debug.Log("unigration file found - " + path);
@@ -98,7 +99,7 @@ public class Unigration : AssetPostprocessor
     {
         if (!to.IsGreaterThan(old))
             return;
-
+                                    
         Debug.Log("Migrate " + old.version + " -> " + to.version);
 
         foreach (var type in Assembly.GetExecutingAssembly().GetExportedTypes())
@@ -116,8 +117,8 @@ public class Unigration : AssetPostprocessor
             var version = md.Groups[1].Value.Replace('_', '.');
             var up = type.GetMethod("Up");
             var since = type.GetMethod("Since");
-
-            if (to.IsGEThan(version))
+            
+            if (to.IsGEThan(version))  
             {
                 if (since != null)
                     since.Invoke(null, new object[] { old.version });
